@@ -57,7 +57,7 @@ def main(request):
         return ("", 204, headers)
 
     # Set CORS headers for the main request
-    headers = {"Access-Control-Allow-Origin": "*"} # change from "*" to "https://rx-radar.com" for production
+    headers = {"Access-Control-Allow-Origin": "*"} # change from "*" to "https://rx-radar.com" for production 
 
 
         
