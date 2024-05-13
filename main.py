@@ -81,17 +81,17 @@ def main(request):
     # checks that the user is valid to place calls 
     user_can_search, user_uuid, err = util.can_user_search(db, phone_number)
     if not user_can_search: 
-        return err, headers
+        return err
     
     if util.get_user_search_credit(db=db, user_uuid=user_uuid) > 0:
         # Push new search to search_requests
         util.db_add_search(db, request_data, user_uuid, 'SEARCH_REQUESTS')
-        return jsonify({'message': 'Request is valid dont show payment'}), 200, headers
+        return jsonify({'message': 'Request is valid dont show payment'}), 200
 
     # Push new search to pending_search_requests
     util.db_add_search(db, request_data, user_uuid, 'PENDING_SEARCH_REQUESTS')
 
-    return jsonify({'message': 'Request is valid show payment'}), 200, headers
+    return jsonify({'message': 'Request is valid show payment'}), 200
 
 
 
