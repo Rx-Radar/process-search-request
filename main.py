@@ -46,18 +46,20 @@ twilio_client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 @functions_framework.http
 def main(request):
     
-    # Set CORS headers for the preflight request
-    if request.method == "OPTIONS":
-        headers = {
-            "Access-Control-Allow-Origin": "*", # change from "*" to "https://rx-radar.com" for production
-            "Access-Control-Allow-Methods": "POST, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type",
-            "Access-Control-Max-Age": "3600",
-        }
-        return ("", 204, headers)
+    # # Set CORS headers for the preflight request
+    # if request.method == "OPTIONS":
+    #     headers = {
+    #         "Access-Control-Allow-Origin": "*", # change from "*" to "https://rx-radar.com" for production
+    #         "Access-Control-Allow-Methods": "POST, OPTIONS",
+    #         "Access-Control-Allow-Headers": "Content-Type",
+    #         "Access-Control-Max-Age": "3600",
+    #     }
+    #     return ("", 204, headers)
 
-    # Set CORS headers for the main request
-    headers = {"Access-Control-Allow-Origin": "*"} # change from "*" to "https://rx-radar.com" for production 
+    # # Set CORS headers for the main request
+    # headers = {"Access-Control-Allow-Origin": "*"} # change from "*" to "https://rx-radar.com" for production 
+
+    headers = {}
 
     # Get the JSON data from the request
     request_data = request.get_json(silent=True)
