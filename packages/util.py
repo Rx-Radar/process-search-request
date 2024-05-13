@@ -48,7 +48,8 @@ def can_user_search(db, phone_number):
             new_user_doc = {
                 "phone": phone_number,
                 "user_uuid": new_user_uuid,
-                "search_credits": 0
+                "search_credits": 0,
+                "last_search_timestamp": 0
             }
             
             db.collection(FIREBASE_USERS_DB).document(new_user_uuid).set(new_user_doc)
