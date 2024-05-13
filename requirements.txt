@@ -1,0 +1,6 @@
+functions_framework==3.5.0
+firebase_admin==6.5.0
+Flask==3.0.2
+twilio==9.0.2
+protobuf==4.25.3
+pyyaml==6.0.1
