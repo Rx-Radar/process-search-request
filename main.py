@@ -57,10 +57,8 @@ def main(request):
         return ("", 204, headers)
 
     # Set CORS headers for the main request
-    headers = {"Access-Control-Allow-Origin": "*"} # change from "*" to "https://rx-radar.com" for production
+    headers = {"Access-Control-Allow-Origin": "*"} # change from "*" to "https://rx-radar.com" for production 
 
-
-        
     # Get the JSON data from the request
     request_data = request.get_json(silent=True)
 
@@ -83,7 +81,7 @@ def main(request):
     if not user_can_search: 
         return err, headers
     
-    if util.get_user_search_credit(user_uuid=user_uuid) > 0:
+    if util.get_user_search_credit(db=db, user_uuid=user_uuid) > 0:
         # Push new search to search_requests
         util.db_add_search(db, request_data, user_uuid, 'SEARCH_REQUESTS')
         return jsonify({'message': 'Request is valid dont show payment'}), 200, headers

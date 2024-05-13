@@ -1,13 +1,9 @@
 from firebase_admin import auth, firestore
 from google.protobuf import timestamp_pb2
-from google.cloud import tasks_v2
 from twilio.rest import Client
 from flask import jsonify
-import requests
-import datetime
 import time
 import uuid
-import json
 import yaml
 import os
 
@@ -51,7 +47,9 @@ def can_user_search(db, phone_number):
 
             new_user_doc = {
                 "phone": phone_number,
-                "user_uuid": new_user_uuid
+                "user_uuid": new_user_uuid,
+                "search_credits": 0,
+                "last_search_timestamp": 0
             }
             
             db.collection(FIREBASE_USERS_DB).document(new_user_uuid).set(new_user_doc)
@@ -123,9 +121,6 @@ def db_add_search(db, req_obj, user_uuid, db_location):
             "quantity": med_quantity,
             "type": med_type
         },
-        "contains_fillable": False,
-        "calls_remaining": 0,
-        "calls" : [],
         "epoch_initiated": epoch_initiated,
     }
 
