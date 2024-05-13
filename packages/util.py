@@ -121,9 +121,6 @@ def db_add_search(db, req_obj, user_uuid, db_location):
             "quantity": med_quantity,
             "type": med_type
         },
-        "contains_fillable": False,
-        "calls_remaining": 0,
-        "calls" : [],
         "epoch_initiated": epoch_initiated,
     }
 
