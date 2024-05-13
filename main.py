@@ -83,7 +83,7 @@ def main(request):
     if not user_can_search: 
         return err, headers
     
-    if util.get_user_search_credit(user_uuid=user_uuid) > 0:
+    if util.get_user_search_credit(db=db, user_uuid=user_uuid) > 0:
         # Push new search to search_requests
         util.db_add_search(db, request_data, user_uuid, 'SEARCH_REQUESTS')
         return jsonify({'message': 'Request is valid dont show payment'}), 200, headers
