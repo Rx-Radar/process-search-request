@@ -131,9 +131,9 @@ def verify_user_token(token):
         print('sssss', uid)
         # The token is valid
         return uid
-    except auth.InvalidIdTokenError:
+    except Exception as e:
         # The token is invalid
-        print('invalid token id error')
+        print(e)
         return None
 
 
