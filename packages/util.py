@@ -136,6 +136,11 @@ def verify_user_token(token):
 
 # validates user medication request body
 def validate_request(request_data):
+
+    # if request is empty return an error
+    if not request_data:
+        return False, (jsonify({'status': 'error', 'message': 'request is empty'}), 400);
+
     required_fields = ['user_session_token', 'phone_number', 'user_location', 'prescription'] # required fields
     prescription_fields = ['name', 'dosage', 'brand_or_generic', 'quantity', 'type'] # required fields within medication
     location_fields = ['lat', 'lon'] # required fields within user_location
