@@ -65,7 +65,7 @@ def main(request):
     # If the token is valid, proceed with the request processing
     success, err = util.validate_request(request_data)
     if not success:
-        return err#, headers
+        return err, headers
 
     # verify the user session token
     user_session_token = request_data["user_session_token"]
