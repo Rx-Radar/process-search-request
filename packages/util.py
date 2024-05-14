@@ -64,7 +64,7 @@ def can_user_search(db, phone_number):
 
     except Exception as e:
         return False, None, (jsonify({
-            "status": "error",
+            "searchStatus": "error",
             "message": "An error occurred during the search"
         }), 500)
 
@@ -139,7 +139,7 @@ def validate_request(request_data):
 
     # if request is empty return an error
     if not request_data:
-        return False, jsonify({'status': 'error', 'message': 'request is empty'})
+        return False, jsonify({'searchStatus': 'error', 'message': 'request is empty'})
 
     required_fields = ['user_session_token', 'phone_number', 'user_location', 'prescription'] # required fields
     prescription_fields = ['name', 'dosage', 'brand_or_generic', 'quantity', 'type'] # required fields within medication
@@ -148,14 +148,14 @@ def validate_request(request_data):
     # Check if all required fields exist
     for field in required_fields:
         if field not in request_data:
-            return False, jsonify({'status': 'error', 'message': f'Missing required field: {field}'})
+            return False, jsonify({'searchStatus': 'error', 'message': f'Missing required field: {field}'})
 
     # Check if the types are correct
     if not isinstance(request_data.get('user_session_token'), str):
-        return False, jsonify({'status': 'error', 'message': 'user_session_token must be a string'})
+        return False, jsonify({'searchStatus': 'error', 'message': 'user_session_token must be a string'})
 
     if not isinstance(request_data.get('phone_number'), str):
-        return False, jsonify({'status': 'error', 'message': 'phone_number must be a string'})
+        return False, jsonify({'searchStatus': 'error', 'message': 'phone_number must be a string'})
 
     ## ------------------------------------------- ##
     # Check Location fields and types
@@ -164,21 +164,21 @@ def validate_request(request_data):
 
     # check if location is empty
     if not user_location:
-        return False, jsonify({'status': 'error', 'message': 'user_location object cannot be empty'})
+        return False, jsonify({'searchStatus': 'error', 'message': 'user_location object cannot be empty'})
     
     # check that all the prescription fields exist
     for field in location_fields:
         if field not in user_location:
-            return False, jsonify({'status': 'error', 'message': f'Missing required field inside user_location: {field}'})
+            return False, jsonify({'searchStatus': 'error', 'message': f'Missing required field inside user_location: {field}'})
     
     if not isinstance(user_location.get('lat'), float):
-        return False, jsonify({'status': 'error', 'message': 'user_location lat must be a float'})
+        return False, jsonify({'searchStatus': 'error', 'message': 'user_location lat must be a float'})
     if not isinstance(user_location.get('lon'), float):
-        return False, jsonify({'status': 'error', 'message': 'user_location lon must be a float'})
+        return False, jsonify({'searchStatus': 'error', 'message': 'user_location lon must be a float'})
     
     # make sure the lat and lon values are valid
     if user_location.get('lat') < -90 or user_location.get('lat') > 90 or user_location.get('lon') < -180 or user_location.get('lon') > 180: 
-        return False, jsonify({'status': 'error', 'message': 'user_location lat and lon must be valid'})
+        return False, jsonify({'searchStatus': 'error', 'message': 'user_location lat and lon must be valid'})
 
     ## ------------------------------------------- ##
     # Check prescription fields and types
@@ -187,24 +187,24 @@ def validate_request(request_data):
 
     # check if prescription is empty 
     if not prescription:
-        return False, jsonify({'status': 'error', 'message': 'prescription object cannot be empty'})
+        return False, jsonify({'searchStatus': 'error', 'message': 'prescription object cannot be empty'})
 
     # check that all the prescription fields exist
     for field in prescription_fields:
         if field not in prescription:
-            return False, jsonify({'status': 'error', 'message': f'Missing required field inside prescription: {field}'})
+            return False, jsonify({'searchStatus': 'error', 'message': f'Missing required field inside prescription: {field}'})
 
     # check that prescription object field types are valid
     if not isinstance(prescription.get('name'), str):
-        return False, jsonify({'status': 'error', 'message': 'prescription name must be a string'})
+        return False, jsonify({'searchStatus': 'error', 'message': 'prescription name must be a string'})
     if not isinstance(prescription.get('dosage'), str):
-        return False, jsonify({'status': 'error', 'message': 'prescription dosage must be a string'})
+        return False, jsonify({'searchStatus': 'error', 'message': 'prescription dosage must be a string'})
     if not isinstance(prescription.get('brand_or_generic'), str):
-        return False, jsonify({'status': 'error', 'message': 'prescription brand_or_generic must be a string'})
+        return False, jsonify({'searchStatus': 'error', 'message': 'prescription brand_or_generic must be a string'})
     if not isinstance(prescription.get('quantity'), str):
-        return False, jsonify({'status': 'error', 'message': 'prescription quantity must be a string'})
+        return False, jsonify({'searchStatus': 'error', 'message': 'prescription quantity must be a string'})
     if not isinstance(prescription.get('type'), str):
-        return False, jsonify({'status': 'error', 'message': 'prescription type must be a string'})
+        return False, jsonify({'searchStatus': 'error', 'message': 'prescription type must be a string'})
 
     # on valid
     return True, None

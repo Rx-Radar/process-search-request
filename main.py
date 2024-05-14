@@ -72,7 +72,7 @@ def main(request):
     verification_token = util.verify_user_token(token=user_session_token)
     if not verification_token:
         # If the user session token is incorrect, return a 401 Unauthorized response
-        return jsonify({'status': 'error', 'message': 'Unauthorized'}), 401, headers
+        return jsonify({'searchsearchStatus': 'error', 'message': 'Unauthorized'}), 401, headers
 
     phone_number = request_data["phone_number"]
 
@@ -82,16 +82,15 @@ def main(request):
         return err, headers
     
     user_search_credits = util.get_user_search_credit(db=db, user_uuid=user_uuid)
-    print('user credits', user_search_credits)
     if  user_search_credits > 0:
         # Push new search to search_requests
         search_request_uuid = util.db_add_search(db, request_data, user_uuid, 'SEARCH_REQUESTS')
-        return jsonify({'status': 'completed', 'searchRequestUuid': search_request_uuid}), 200, headers
+        return jsonify({'searchStatus': 'completed', 'message': search_request_uuid}), 200, headers
 
     # Push new search to pending_search_requests
     search_request_uuid = util.db_add_search(db, request_data, user_uuid, 'PENDING_SEARCH_REQUESTS')
 
-    return jsonify({'status': 'not_paid', 'searchRequestUuid': search_request_uuid}), 402, headers
+    return jsonify({'searchStatus': 'not_paid', 'message': search_request_uuid}), 200, headers
 
 
 
