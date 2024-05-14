@@ -89,7 +89,7 @@ def main(request):
     # Push new search to pending_search_requests
     search_request_uuid = util.db_add_search(db, request_data, user_uuid, 'PENDING_SEARCH_REQUESTS')
 
-    return jsonify({'status': 'not_paid', 'searchRequestUuid': search_request_uuid}), 200, headers
+    return jsonify({'status': 'not_paid', 'searchRequestUuid': search_request_uuid}), 402, headers
 
 
 
