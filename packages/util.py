@@ -46,7 +46,7 @@ def can_user_search(db, phone_number):
             }
             
             db.collection(FIREBASE_USERS_DB).document(new_user_uuid).set(new_user_doc)
-            return True, new_user_uuid
+            return True, new_user_uuid, None
     
         user_doc = matching_user_docs[0].to_dict()
 
