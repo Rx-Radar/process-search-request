@@ -126,14 +126,11 @@ def db_add_search(db, req_obj, user_uuid, db_location):
 def verify_user_token(token):
     try:
         decoded_token = auth.verify_id_token(token)
-        print('decoded token', decoded_token)
         uid = decoded_token['uid']
-        print('sssss', uid)
         # The token is valid
         return uid
-    except auth.InvalidIdTokenError:
+    except Exception as e:
         # The token is invalid
-        print('invalid token id error')
         return None
 
 
