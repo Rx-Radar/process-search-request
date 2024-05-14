@@ -63,16 +63,16 @@ def main(request):
     request_data = request.get_json(silent=True)
 
     # If the token is valid, proceed with the request processing
-    success, out, code = util.validate_request(request_data)
+    success, err = util.validate_request(request_data)
     if not success:
-        return out, code, headers
+        return err, headers
 
     # verify the user session token
     user_session_token = request_data["user_session_token"]
     verification_token = util.verify_user_token(token=user_session_token)
     if not verification_token:
         # If the user session token is incorrect, return a 401 Unauthorized response
-        return jsonify({'error': 'Unauthorized'}), 401, headers
+        return jsonify({'status': 'error', 'message': 'Unauthorized'}), 401, headers
 
     phone_number = request_data["phone_number"]
 
@@ -83,13 +83,13 @@ def main(request):
     
     if util.get_user_search_credit(db=db, user_uuid=user_uuid) > 0:
         # Push new search to search_requests
-        util.db_add_search(db, request_data, user_uuid, 'SEARCH_REQUESTS')
-        return jsonify({'message': 'Request is valid dont show payment'}), 200, headers
+        search_request_uuid = util.db_add_search(db, request_data, user_uuid, 'SEARCH_REQUESTS')
+        return jsonify({'status': 'completed', 'searchRequestUuid': search_request_uuid}), 200, headers
 
     # Push new search to pending_search_requests
-    util.db_add_search(db, request_data, user_uuid, 'PENDING_SEARCH_REQUESTS')
+    search_request_uuid = util.db_add_search(db, request_data, user_uuid, 'PENDING_SEARCH_REQUESTS')
 
-    return jsonify({'message': 'Request is valid show payment'}), 200, headers
+    return jsonify({'status': 'not_paid', 'searchRequestUuid': search_request_uuid}), 200, headers
 
 
 
