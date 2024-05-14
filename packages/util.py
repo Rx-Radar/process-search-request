@@ -61,10 +61,11 @@ def can_user_search(db, phone_number):
         last_search_timestamp = user_doc.get("last_search_timestamp")
         user_uuid = user_doc.get("user_uuid")
 
+        ## ------------- not implemented because payments are in place ---------------------- ##
         # if user should be rate limited
-        SECONDS_IN_DAY = 86400
-        if (time.time() - last_search_timestamp) < SECONDS_IN_DAY:
-            return False, user_uuid, (jsonify({"error": "User searched too many times"}), 400)
+        # SECONDS_IN_DAY = 86400
+        # if (time.time() - last_search_timestamp) < SECONDS_IN_DAY:
+        #     return False, user_uuid, (jsonify({"error": "User searched too many times"}), 400)
         
         # if user should not be rate limited
         return True, user_uuid, None
