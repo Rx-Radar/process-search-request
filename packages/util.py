@@ -118,6 +118,9 @@ def db_add_search(db, req_obj, user_uuid, db_location):
     else:
         db.collection(FIREBASE_SEARCH_REQUESTS_DB).document(search_request_uuid).set(data)
 
+    # return search_request_uuid
+    return search_request_uuid
+
 
 # verifies user session token
 def verify_user_token(token):

@@ -83,13 +83,13 @@ def main(request):
     
     if util.get_user_search_credit(db=db, user_uuid=user_uuid) > 0:
         # Push new search to search_requests
-        util.db_add_search(db, request_data, user_uuid, 'SEARCH_REQUESTS')
-        return jsonify({'status': 'completed', 'message': 'Prescription search was placed'}), 200 #, headers
+        search_request_uuid = util.db_add_search(db, request_data, user_uuid, 'SEARCH_REQUESTS')
+        return jsonify({'status': 'completed', 'results': search_request_uuid}), 200 #, headers
 
     # Push new search to pending_search_requests
-    util.db_add_search(db, request_data, user_uuid, 'PENDING_SEARCH_REQUESTS')
+    search_request_uuid = util.db_add_search(db, request_data, user_uuid, 'PENDING_SEARCH_REQUESTS')
 
-    return jsonify({'status': 'not_paid', 'message': 'You must pay to access the search functionality'}), 200 #, headers
+    return jsonify({'status': 'not_paid', 'results': search_request_uuid}), 200 #, headers
 
 
 
