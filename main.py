@@ -47,17 +47,17 @@ twilio_client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 def main(request):
     
     # Set CORS headers for the preflight request
-    # if request.method == "OPTIONS":
-    #     headers = {
-    #         "Access-Control-Allow-Origin": "*", # change from "*" to "https://rx-radar.com" for production
-    #         "Access-Control-Allow-Methods": "POST, OPTIONS",
-    #         "Access-Control-Allow-Headers": "Content-Type",
-    #         "Access-Control-Max-Age": "3600",
-    #     }
-    #     return ("", 204, headers)
+    if request.method == "OPTIONS":
+        headers = {
+            "Access-Control-Allow-Origin": "*", # change from "*" to "https://rx-radar.com" for production
+            "Access-Control-Allow-Methods": "POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type",
+            "Access-Control-Max-Age": "3600",
+        }
+        return ("", 204, headers)
 
-    # # Set CORS headers for the main request
-    # headers = {"Access-Control-Allow-Origin": "*"} # change from "*" to "https://rx-radar.com" for production 
+    # Set CORS headers for the main request
+    headers = {"Access-Control-Allow-Origin": "*"} # change from "*" to "https://rx-radar.com" for production 
 
     # Get the JSON data from the request
     request_data = request.get_json(silent=True)
@@ -68,28 +68,28 @@ def main(request):
         return err#, headers
 
     # verify the user session token
-    # user_session_token = request_data["user_session_token"]
-    # verification_token = util.verify_user_token(token=user_session_token)
-    # if not verification_token:
-    #     # If the user session token is incorrect, return a 401 Unauthorized response
-    #     return jsonify({'status': 'error', 'message': 'Unauthorized'}), 401, headers
+    user_session_token = request_data["user_session_token"]
+    verification_token = util.verify_user_token(token=user_session_token)
+    if not verification_token:
+        # If the user session token is incorrect, return a 401 Unauthorized response
+        return jsonify({'status': 'error', 'message': 'Unauthorized'}), 401, headers
 
     phone_number = request_data["phone_number"]
 
     # checks that the user is valid to place calls 
     user_can_search, user_uuid, err = util.can_user_search(db, phone_number)
     if not user_can_search: 
-        return err #, headers
+        return err, headers
     
     if util.get_user_search_credit(db=db, user_uuid=user_uuid) > 0:
         # Push new search to search_requests
         search_request_uuid = util.db_add_search(db, request_data, user_uuid, 'SEARCH_REQUESTS')
-        return jsonify({'status': 'completed', 'searchRequestUuid': search_request_uuid}), 200#, headers
+        return jsonify({'status': 'completed', 'searchRequestUuid': search_request_uuid}), 200, headers
 
     # Push new search to pending_search_requests
     search_request_uuid = util.db_add_search(db, request_data, user_uuid, 'PENDING_SEARCH_REQUESTS')
 
-    return jsonify({'status': 'not_paid', 'searchRequestUuid': search_request_uuid}), 200#, headers
+    return jsonify({'status': 'not_paid', 'searchRequestUuid': search_request_uuid}), 200, headers
 
 
 
