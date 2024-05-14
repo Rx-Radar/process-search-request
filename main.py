@@ -81,7 +81,9 @@ def main(request):
     if not user_can_search: 
         return err, headers
     
-    if util.get_user_search_credit(db=db, user_uuid=user_uuid) > 0:
+    user_search_credits = util.get_user_search_credit(db=db, user_uuid=user_uuid)
+    print('user credits', user_search_credits)
+    if  user_search_credits > 0:
         # Push new search to search_requests
         search_request_uuid = util.db_add_search(db, request_data, user_uuid, 'SEARCH_REQUESTS')
         return jsonify({'status': 'completed', 'searchRequestUuid': search_request_uuid}), 200, headers
