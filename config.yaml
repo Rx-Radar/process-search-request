@@ -8,7 +8,7 @@ prod:
   firebase:
     calls_db: 'prod_calls'
     pharmacy_db: 'prod_pharmacies'
-    search_requests_db: 'prop_search_requests'
+    search_requests_db: 'prod_search_requests'
     pending_search_requests_db: 'prod_pending_search_requests'
     users_db: 'prod_users'
   cloud_functions:
